@@ -1,0 +1,3 @@
+com\md\soapui\custom\util\Property.class
+com\md\soapui\custom\util\groovy\ScriptConfigurator.class
+com\md\soapui\custom\util\groovy\BindingCreator.class
