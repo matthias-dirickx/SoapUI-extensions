@@ -52,7 +52,7 @@ public class ScriptConfigurator {
      * @param scriptName
      * @param vars
      */
-    private void buildShell(String scriptName, Map<String, Object> vars) {
+    public void buildShell(String scriptName, Map<String, Object> vars) {
         SoapUI.log("Script Repository used: "+getScriptRepository());
         Binding binding = BindingCreator.fromMap(vars);
         GroovyShell shell = new GroovyShell(binding);
