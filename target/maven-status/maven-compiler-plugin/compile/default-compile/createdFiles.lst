@@ -1,2 +1,5 @@
 com\md\soapui\custom\util\groovy\BindingCreator.class
+com\md\soapui\custom\action\SearchItems.class
 com\md\soapui\custom\util\groovy\ScriptConfigurator.class
+com\md\soapui\custom\util\soapui\ModelItemClassList.class
+com\md\soapui\custom\util\soapui\ModelItemSupport.class

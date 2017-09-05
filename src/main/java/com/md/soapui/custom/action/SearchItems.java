@@ -24,11 +24,13 @@ public class SearchItems extends AbstractSoapUIAction<ModelItem> {
         List<ModelItem> searchResult = new ArrayList<>();
         findItems(searchResult, item, token);
 
+        //User message on empty results list
         if( searchResult.isEmpty()) {
             UISupport.showErrorMessage( "No items matching [" + token + "] found in project");
             return;
         }
 
+        //Show in default modelitem panel when results found.
         UISupport.showDesktopPanel(
             new ModelItemListDesktopPanel(
                  "Search Result"
@@ -38,6 +40,8 @@ public class SearchItems extends AbstractSoapUIAction<ModelItem> {
         );
     }
 
+    //Get all descendants.
+    //Match token.toLowerCase() to name.toLowerCase()
     private void findItems(List<ModelItem> searchResult, ModelItem parent, String token) {
         for( ModelItem child : parent.getChildren()){
             if(child.getName().toLowerCase().contains(token.toLowerCase())) {
