@@ -3,18 +3,23 @@ package com.md.soapui.custom.util.datadriver;
 import java.io.File;
 import java.util.Arrays;
 
-public class DataDriver {
+public class DataSource {
 	
-	private DataDriverType type;
-	private AbstractDataDriver dataDriver;
+	private DataSourceType type;
+	private AbstractDataSource dataSource;
 	private File file;
-	private int firstRowIndex;
-	private int lastrowIndex;
 	
-	public void setDataDriverType(DataDriverType type) {
+	public DataSource(DataSourceType type, File file) throws DataSourceException {
+		//Add check when extra implementation for abstract data driver that do not fit type and file constructor.
+		this.type = type;
+		this.file = file;
+		initiateDriver();
+	}
+	
+	public void setDataDriverType(DataSourceType type) {
 		this.type = type;
 	}
-	public DataDriverType getDataDriverType() {
+	public DataSourceType getDataDriverType() {
 		return this.type;
 	}
 	public void setFile(File file) {
@@ -24,21 +29,13 @@ public class DataDriver {
 		return this.file;
 	}
 	
-	public DataDriver() {
-	}
-	
-	public DataDriver(DataDriverType type, File file) throws DataDriverException {
-		//Add check when extra implementation for abstract data driver that do not fit type and file constructor.
-		this.type = type;
-		this.file = file;
-		initiateDriver();
-	}
-	
-	private void initiateDriver() throws DataDriverException {
+	private void initiateDriver() throws DataSourceException {
 		switch(type) {
-		    case EXCEL_XLSX : dataDriver = new ExcelDataDriver(file);
+		    case EXCEL_XLSX : dataSource = new ExcelDataSource(file);
 		    break;
-		    default: throw new DataDriverException("Type not known - must be one of DataDriverType Enum " + Arrays.asList(DataDriverType.values()));
+		    case CSV : dataSource = new CsvDataSource(file);
+		    break;
+		    default: throw new DataSourceException("Type not known - must be one of DataDriverType Enum " + Arrays.asList(DataSourceType.values()));
 		}
 	}
 	
@@ -46,8 +43,8 @@ public class DataDriver {
 	 * Access point for all configuration as well as the command to load the set with the loadDataset() method.
 	 * @return AbstractDataDriver
 	 */
-	public AbstractDataDriver config() {
-		return dataDriver;
+	public AbstractDataSource config() {
+		return dataSource;
 	}
 	
 	/**
@@ -68,6 +65,6 @@ public class DataDriver {
 	 * @return Map&lt;String, String&gt; or ArrayList&lt;String&gt;
 	 */
 	public Object getDataLine(int rowIndex) {
-		return dataDriver.getLine(rowIndex);
+		return dataSource.getLine(rowIndex);
 	}
 }

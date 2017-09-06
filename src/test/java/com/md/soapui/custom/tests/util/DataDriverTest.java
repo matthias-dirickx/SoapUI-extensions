@@ -5,14 +5,14 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.md.soapui.custom.util.datadriver.DataDriver;
-import com.md.soapui.custom.util.datadriver.DataDriverType;
+import com.md.soapui.custom.util.datadriver.DataSource;
+import com.md.soapui.custom.util.datadriver.DataSourceType;
 
 public class DataDriverTest {
 	
 	@Test
 	public void testDataDriverInitialization_Excel() {
-		DataDriver eDriver = new DataDriver(DataDriverType.EXCEL_XLSX, new File("src/test/resources/testBook_Sheets_AndColumns.xlsx"));
+		DataSource eDriver = new DataSource(DataSourceType.EXCEL_XLSX, new File("src/test/resources/testBook_Sheets_AndColumns.xlsx"));
 		try {
 			assert eDriver.getFile().getCanonicalPath().equals("src/test/resources/testBook_Sheets_AndColumns.xlsx");
 		} catch (IOException e) {

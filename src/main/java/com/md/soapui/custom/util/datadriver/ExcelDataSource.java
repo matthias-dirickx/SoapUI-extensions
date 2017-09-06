@@ -10,7 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelDataDriver extends AbstractDataDriver {
+public class ExcelDataSource extends AbstractDataSource {
 	
 	//Default values
 	private static final int DEFAULT_SHEET_INDEX = 0;
@@ -70,7 +70,7 @@ public class ExcelDataDriver extends AbstractDataDriver {
 	 * </li>
 	 * @param file
 	 */
-	public ExcelDataDriver(File file) {
+	public ExcelDataSource(File file) {
 		this.file = file;
 		setWorkbook();
 		initializeDefaultValues();
@@ -86,10 +86,10 @@ public class ExcelDataDriver extends AbstractDataDriver {
 		try {
 			this.wb = new XSSFWorkbook(this.file);
 		} catch (InvalidFormatException e) {
-			new DataDriverException("This is not a valid format");
+			new DataSourceException("This is not a valid format");
 			e.printStackTrace();
 		} catch (IOException e) {
-			new DataDriverException("IO Exception");
+			new DataSourceException("IO Exception");
 			e.printStackTrace();
 		}
 	}
@@ -132,42 +132,42 @@ public class ExcelDataDriver extends AbstractDataDriver {
 		headerRow = sheet.getRow(getHeaderRowNumber());
 	}
 	
-	public ExcelDataDriver getTheSheetWithName(String sheetName) {
+	public ExcelDataSource getTheSheetWithName(String sheetName) {
 		this.sheetName = sheetName;
 		this.selectSheetByName = true;
 		return this;
 	}
 	
-	public ExcelDataDriver getTheSheetWithIndex(int sheetIndex) {
+	public ExcelDataSource getTheSheetWithIndex(int sheetIndex) {
 		this.sheetIndex = sheetIndex;
 		this.selectSheetByName = false;
 		return this;
 	}
 	
-	public ExcelDataDriver startAtRow(int rowIndex) {
+	public ExcelDataSource startAtRow(int rowIndex) {
 		setFirstDataRowNumber(rowIndex);
 		return this;
 	}
 	
-	public ExcelDataDriver stopAtRow(int rowIndex) {
+	public ExcelDataSource stopAtRow(int rowIndex) {
 		this.lastDatarow = rowIndex;
 		this.initializeLastDatarowNumber = false;
 		return this;
 	}
 	
-	public ExcelDataDriver startAtColumn(int cellIndex) {
+	public ExcelDataSource startAtColumn(int cellIndex) {
 		this.firstCellNumber = cellIndex;
 		this.initializeFirstCellNumber = false;
 		return this;
 	}
 	
-	public ExcelDataDriver stopAtColumn(int cellIndex) {
+	public ExcelDataSource stopAtColumn(int cellIndex) {
 		this.lastCellNumber = cellIndex;
 		this.initializeLastCellNumber = false;
 		return this;
 	}
 	
-	public ExcelDataDriver useHeadersAtRow(int rowIndex) {
+	public ExcelDataSource useHeadersAtRow(int rowIndex) {
 		this.setHeaderRowNumber(rowIndex);
 		this.setBasedOnHeaders(true);
 		return this;
