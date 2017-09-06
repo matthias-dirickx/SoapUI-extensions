@@ -1,4 +1,4 @@
-package com.md.soapui.custom.util.datadriver;
+package com.md.soapui.custom.util.datasource;
 
 public class DataSourceException extends Exception {
 

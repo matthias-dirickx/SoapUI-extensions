@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.md.soapui.custom.util.datadriver.DataSource;
-import com.md.soapui.custom.util.datadriver.DataSourceType;
+import com.md.soapui.custom.util.datasource.DataSource;
+import com.md.soapui.custom.util.datasource.DataSourceType;
 
 public class DataDriverTest {
 	

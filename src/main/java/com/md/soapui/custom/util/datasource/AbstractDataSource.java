@@ -1,4 +1,4 @@
-package com.md.soapui.custom.util.datadriver;
+package com.md.soapui.custom.util.datasource;
 
 import java.util.ArrayList;
 import java.util.Map;
