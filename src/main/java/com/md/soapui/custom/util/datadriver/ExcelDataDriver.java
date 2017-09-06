@@ -12,19 +12,29 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelDataDriver extends AbstractDataDriver {
 	
-	private static int DEFAULT_SHEET_INDEX = 0;
+	//Default values
+	private static final int DEFAULT_SHEET_INDEX = 0;
 	private static final String DEFAULT_SHEET_NAME="Sheet1";
-	private static final boolean DEFAULT_SELECT_SHEET_BY_NAME = false;
 	
+	private static final boolean DEFAULT_SELECT_SHEET_BY_NAME = false;
+	private static final boolean DEFAULT_INITIALIZE_FIRST_CELL_NUMBER = true;
+	private static final boolean DEFAULT_INITIALIZE_LAST_CELL_NUMBER = true;
+	private static final boolean DEFAULT_INITIALIZE_LAST_DATAROW_NUMBER = true;
+	
+	//Private fields - access with getters / setters
 	private int firstCellNumber;
 	private int lastCellNumber;
 	private int firstHeaderCell;
 	private int lastHeaderCell;
 	private int lastDatarow;
-	
 	private int sheetIndex;
+	
 	private String sheetName;
+	
 	private boolean selectSheetByName;
+	private boolean initializeFirstCellNumber;
+	private boolean initializeLastCellNumber;
+	private boolean initializeLastDatarowNumber;
 	
 	private File file;
 	private XSSFWorkbook wb;
@@ -32,12 +42,32 @@ public class ExcelDataDriver extends AbstractDataDriver {
 	private XSSFRow headerRow;
 	
 	/**
-	 * Creates object ExcelDataDriver.
-	 * Sets File file to input 'file' in parameters.
-	 * Initializes standard values
-	 * Header row: index 0
-	 * First data row: index 1
-	 * Return data with headers: false
+	 * <p>Creates object ExcelDataDriver.</p>
+	 * <p>Sets File file to input 'file' in parameters.</p>
+	 * <p>Initializes standard values</p>
+	 * <p>Header row: index 0</p>
+	 * <p>First data row: index 1</p>
+	 * <p>Return data with headers: false</p>
+	 * 
+	 * The following values are initialized:
+	 * <li>
+	 * Default sheet index (0)
+	 * </li>
+	 * <li>
+	 * Default sheet name (Sheet1)
+	 * </li>
+	 * <li>
+	 * Default select sheet by name boolean (false)
+	 * </li>
+	 * <li>
+	 * Default first cell number (identified by looking for the first cell in the first line found)
+	 * </li>
+	 * <li>
+	 * Default last cell number (identified by looking for the last cell in the range of rows defined)
+	 * </li>
+	 * <li>
+	 * Default last data row (identified by looking for the last row with a non-null cell.
+	 * </li>
 	 * @param file
 	 */
 	public ExcelDataDriver(File file) {
@@ -47,6 +77,9 @@ public class ExcelDataDriver extends AbstractDataDriver {
 		this.sheetIndex = DEFAULT_SHEET_INDEX;
 		this.sheetName = DEFAULT_SHEET_NAME;
 		this.selectSheetByName = DEFAULT_SELECT_SHEET_BY_NAME;
+		this.initializeFirstCellNumber = DEFAULT_INITIALIZE_FIRST_CELL_NUMBER;
+		this.initializeLastCellNumber = DEFAULT_INITIALIZE_LAST_CELL_NUMBER;
+		this.initializeLastDatarowNumber = DEFAULT_INITIALIZE_LAST_DATAROW_NUMBER;
 	}
 	
 	private void setWorkbook() {
@@ -77,42 +110,38 @@ public class ExcelDataDriver extends AbstractDataDriver {
 			sheet = wb.getSheet(sheetName);
 		}
 		setDatasetCountValues();
+		setHeaderRow();
 	}
 	
 	@Override
 	protected void setDatasetCountValues() {
-		setFirstExistingCellNumber();
-		setLastExistingCellNumber();
-		setFirstHeaderCellNumber();
-		setLastHeaderCellNumber();
-		setLastDatarowNumber();
+		if(initializeFirstCellNumber) {
+			initializeFirstExistingCellNumber();
+			initializeFirstHeaderCellNumber();
+		}
+		if(initializeLastCellNumber) {
+			initializeLastExistingCellNumber();
+			initializeLastHeaderCellNumber();
+		}
+		if(initializeLastDatarowNumber) {
+			initializeLastDatarowNumber();
+		}
 	}
 	
-	public ExcelDataDriver setSheetIndex(int sheetIndex) {
-		this.sheetIndex = sheetIndex;
-		return this;
+	private void setHeaderRow() {
+		headerRow = sheet.getRow(getHeaderRowNumber());
 	}
 	
-	public int getSheetIndex() {
-		return this.sheetIndex;
-	}
-	
-	public ExcelDataDriver setSheetName(String sheetName) {
+	public ExcelDataDriver getTheSheetWithName(String sheetName) {
 		this.sheetName = sheetName;
+		this.selectSheetByName = true;
 		return this;
 	}
 	
-	public String getSheetName() {
-		return this.sheetName;
-	}
-	
-	public ExcelDataDriver setSelectSheetByName(boolean selectSheetByName) {
-		this.selectSheetByName = selectSheetByName;
+	public ExcelDataDriver getTheSheetWithIndex(int sheetIndex) {
+		this.sheetIndex = sheetIndex;
+		this.selectSheetByName = false;
 		return this;
-	}
-	
-	public boolean getSelectSheetByName() {
-		return this.selectSheetByName;
 	}
 	
 	public ExcelDataDriver startAtRow(int rowIndex) {
@@ -122,21 +151,32 @@ public class ExcelDataDriver extends AbstractDataDriver {
 	
 	public ExcelDataDriver stopAtRow(int rowIndex) {
 		this.lastDatarow = rowIndex;
+		this.initializeLastDatarowNumber = false;
 		return this;
 	}
 	
 	public ExcelDataDriver startAtColumn(int cellIndex) {
-		firstCellNumber = cellIndex;
+		this.firstCellNumber = cellIndex;
+		this.initializeFirstCellNumber = false;
 		return this;
 	}
 	
 	public ExcelDataDriver stopAtColumn(int cellIndex) {
-		lastCellNumber = cellIndex;
+		this.lastCellNumber = cellIndex;
+		this.initializeLastCellNumber = false;
 		return this;
 	}
 	
+	public ExcelDataDriver useHeadersAtRow(int rowIndex) {
+		this.setHeaderRowNumber(rowIndex);
+		this.setBasedOnHeaders(true);
+		return this;
+	}
+	
+	
+	
 	//Private methods for the automatic initialization
-	private void setFirstExistingCellNumber() {
+	private void initializeFirstExistingCellNumber() {
 		int firstCellNumber = sheet.getRow(0).getFirstCellNum();
 		if(firstCellNumber != 0) {
 			for(int i = 1; i < sheet.getLastRowNum(); i++) {
@@ -152,7 +192,7 @@ public class ExcelDataDriver extends AbstractDataDriver {
 		this.firstCellNumber = firstCellNumber;
 	}
 	
-	private void setLastExistingCellNumber() {
+	private void initializeLastExistingCellNumber() {
 		int lastCellNumber = sheet.getRow(0).getLastCellNum();
 		for(int i = 1; i < sheet.getLastRowNum(); i++) {
 			int testInt = sheet.getRow(i).getLastCellNum();
@@ -163,20 +203,22 @@ public class ExcelDataDriver extends AbstractDataDriver {
 		this.lastCellNumber = lastCellNumber;
 	}
 	
-	private void setFirstHeaderCellNumber() {
+	private void initializeFirstHeaderCellNumber() {
 		firstHeaderCell = sheet.getRow(this.getHeaderRowNumber())
 				               .getFirstCellNum();
 	}
 	
-	private void setLastHeaderCellNumber() {
+	private void initializeLastHeaderCellNumber() {
 		lastHeaderCell = sheet.getRow(this.getHeaderRowNumber())
 				              .getLastCellNum();
 	}
 	
-	private void setLastDatarowNumber() {
+	private void initializeLastDatarowNumber() {
 		lastDatarow = sheet.getLastRowNum();
 	}
 	
+	//Return Line of data methods.
+	//This is the bottom line.
 	@Override
 	protected ArrayList<String> getLineWithoutHeaders (int rowNumber) {
 		ArrayList<String> row = new ArrayList<>();
@@ -191,7 +233,7 @@ public class ExcelDataDriver extends AbstractDataDriver {
 	protected HashMap<String,String> getLineWithHeaders(int rowNumber) {
 		HashMap<String, String> row = new HashMap<>();
 		XSSFRow dataRow = sheet.getRow(rowNumber);
-		headerRow = sheet.getRow(getHeaderRowNumber());
+		
 		for(int cellNum = firstHeaderCell; cellNum < lastHeaderCell; cellNum++) {
 			row.put(headerRow.getCell(cellNum).getStringCellValue()
 				   ,dataRow.getCell(cellNum).getStringCellValue());
