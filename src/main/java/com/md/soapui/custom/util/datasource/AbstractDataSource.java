@@ -12,8 +12,9 @@ abstract public class AbstractDataSource {
 	private int firstDataRowNumber;
 	private boolean basedOnHeaders;
 	
-	public void setBasedOnHeaders(boolean basedOnHeaders) {
+	public AbstractDataSource setBasedOnHeaders(boolean basedOnHeaders) {
 		this.basedOnHeaders = basedOnHeaders;
+		return this;
 	}
 	public boolean getBasedOnHeaders() {
 		return this.basedOnHeaders;
@@ -36,18 +37,25 @@ abstract public class AbstractDataSource {
 		setFirstDataRowNumber(DEFAULT_FIRST_DATA_ROW);
 	}
 	
-	public Object getLine(int rowNumber) {
-		Object o = null;
+	public Map<?, String> getLine(int rowNumber) {
 		if(basedOnHeaders) {
-		    o = getLineWithHeaders(rowNumber);
+		    return getLineWithHeaders(rowNumber);
 		} else {
-			o = getLineWithoutHeaders(rowNumber);
+			return getLineWithoutHeaders(rowNumber);
 		}
-		return o;
 	}
 	
-	abstract protected void loadDataset();
-	abstract protected ArrayList<String> getLineWithoutHeaders(int rowNumber);
+	public abstract AbstractDataSource getTheSheetWithName(String sheetName);
+	public abstract AbstractDataSource getTheSheetWithIndex(int sheetIndex);
+	public abstract AbstractDataSource startAtRow(int index);
+	public abstract AbstractDataSource stopAtRow(int index);
+	public abstract AbstractDataSource startAtColumn(int index);
+	public abstract AbstractDataSource stopAtColumn(int index);
+	public abstract AbstractDataSource useHeadersAtRow(int index);
+	
+	public abstract void loadDataset();
+	
+	abstract protected Map<Integer,String> getLineWithoutHeaders(int rowNumber);
 	abstract protected Map<String,String> getLineWithHeaders(int rowNumber);
 	abstract protected void setDatasetCountValues();
 }

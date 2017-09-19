@@ -11,13 +11,13 @@ public class CsvDataSource extends AbstractDataSource {
 	}
 
 	@Override
-	protected void loadDataset() {
+	public void loadDataset() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected ArrayList<String> getLineWithoutHeaders(int rowNumber) {
+	protected Map<Integer, String> getLineWithoutHeaders(int rowNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -32,6 +32,48 @@ public class CsvDataSource extends AbstractDataSource {
 	protected void setDatasetCountValues() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public AbstractDataSource getTheSheetWithName(String sheetName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource getTheSheetWithIndex(int sheetIndex) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource startAtRow(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource stopAtRow(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource startAtColumn(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource stopAtColumn(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AbstractDataSource useHeadersAtRow(int index) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

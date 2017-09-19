@@ -18,6 +18,6 @@ public class ModelItemSupportTest {
 		p.addNewTestSuite("TestSuiteOne");
 		p.addNewTestSuite("TestSuiteTwo");
 		ModelItemSupport mis = new ModelItemSupport();
-		System.out.println(mis.getAllChildren(p.getProject()).toString());
+		assert mis.getAllChildren(p.getProject()).size() == 2;
 	}
 }

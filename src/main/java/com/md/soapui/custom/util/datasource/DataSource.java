@@ -2,6 +2,7 @@ package com.md.soapui.custom.util.datasource;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
 
 public class DataSource {
 	
@@ -14,19 +15,6 @@ public class DataSource {
 		this.type = type;
 		this.file = file;
 		initiateDriver();
-	}
-	
-	public void setDataDriverType(DataSourceType type) {
-		this.type = type;
-	}
-	public DataSourceType getDataDriverType() {
-		return this.type;
-	}
-	public void setFile(File file) {
-		this.file = file;
-	}
-	public File getFile() {
-		return this.file;
 	}
 	
 	private void initiateDriver() throws DataSourceException {
@@ -50,21 +38,27 @@ public class DataSource {
 	/**
 	 * Get line of data within the boundaries of the configuration.
 	 * <br/>
-	 * It either returns a map or a list of strings.
+	 * It either returns a map of Strings or a map of integer with Strings.<br/>
+	 * The choice is made earlier in the configuration. If you want to use headers,
+	 * then you need to call the config() method and define
+	 * config().useHeadersAtRow(int rowIndex) to configure this. This config needs to be implemented before calling the getDataLine() method.
 	 * <br/>
-	 * <p>The Map of strings is defined as:<br/>
+	 * <p>The Map of Strings to String is defined as:<br/>
 	 * <li>key: header name</li>
 	 * <li>value: cell value as String</li>
 	 * </p>
+	 * <p>The Map of Integer to String is defined as:<br/>
+	 * <li>key: Row ID</li>
+	 * <li>value: cell value as String</li>
+	 * </p>
 	 * <p>
-	 * The list of Strings contains the values for the range defined in the configuration in the order they are retrieved.<br/>
 	 * 
 	 * </p>
 	 * 
 	 * @param int rowIndex
-	 * @return Map&lt;String, String&gt; or ArrayList&lt;String&gt;
+	 * @return Map&lt;String, String&gt; or Map&lt;Integer, String&gt;
 	 */
-	public Object getDataLine(int rowIndex) {
+	public Map<?, String> getDataLine(int rowIndex) {
 		return dataSource.getLine(rowIndex);
 	}
 }

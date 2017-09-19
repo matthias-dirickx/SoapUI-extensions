@@ -1,5 +1,13 @@
-com\md\soapui\custom\util\groovy\BindingCreator.class
-com\md\soapui\custom\action\SearchItems.class
-com\md\soapui\custom\util\groovy\ScriptConfigurator.class
+com\md\soapui\custom\util\datasource\AbstractDataSource.class
+com\md\soapui\custom\util\datasource\CsvDataSource.class
+com\md\soapui\custom\util\datasource\ExcelDataSource.class
 com\md\soapui\custom\util\soapui\ModelItemClassList.class
 com\md\soapui\custom\util\soapui\ModelItemSupport.class
+com\md\soapui\custom\util\datasource\DataSourceException.class
+com\md\soapui\custom\util\groovy\BindingCreator.class
+com\md\soapui\custom\util\datasource\DataSource.class
+com\md\soapui\custom\action\SearchItems.class
+com\md\soapui\custom\util\groovy\ScriptConfigurator.class
+com\md\soapui\custom\util\datasource\DataSourceType.class
+com\md\soapui\custom\util\datasource\DataSource$1.class
+com\md\soapui\custom\action\UpdateHeaders.class

@@ -15,7 +15,6 @@ public class ModelItemSupport {
 	public List<ModelItem> getAllChildren(ModelItem item) {
 		List<ModelItem> allChildren = new ArrayList<>();
 		findAllChildrenRecursive(allChildren, item);
-		
 		return allChildren;
 	}
 	
