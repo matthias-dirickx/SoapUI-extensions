@@ -1,4 +1,4 @@
-package com.md.soapui.custom.support.html;
+package com.md.soapui.custom.support.html.simplebuilder;
 
 public class HtmlSimpleElement extends HtmlTag {
 	private String content;

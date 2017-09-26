@@ -1,4 +1,4 @@
-package com.md.soapui.custom.support.html;
+package com.md.soapui.custom.support.html.simplebuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,7 @@ public class HtmlTag {
 	
 	public HtmlTag(String tag) {
 		this.tag = tag;
+		this.attributes = new HashMap<>();
 	}
 	
 	public void addAttribute(String attributeName, String attributeValue) {
@@ -18,7 +19,7 @@ public class HtmlTag {
 	}
 	
 	public String start() {
-		StringBuilder sb = null;
+		StringBuilder sb = new StringBuilder();
 		setAttributesString();
 		return sb.append("<")
 				 .append(tag)
@@ -32,7 +33,7 @@ public class HtmlTag {
 	}
 	
 	public String startWithoutContent() {
-		StringBuilder sb = null;
+		StringBuilder sb = new StringBuilder();
 		setAttributesString();
 		return sb.append("<")
 				 .append(tag)
@@ -42,7 +43,7 @@ public class HtmlTag {
 	}
 	
 	private void setAttributesString() {
-		StringBuilder sb = null;
+		StringBuilder sb = new StringBuilder();
 		String s = "";
 		if(!attributes.isEmpty()) {
 			for(Map.Entry<String, String> att: attributes.entrySet()) {

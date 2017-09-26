@@ -1,4 +1,4 @@
-package com.md.soapui.custom.support.html;
+package com.md.soapui.custom.support.html.simplebuilder;
 
 public class HtmlPageBuilder {
 	private String headStyle;
@@ -16,16 +16,19 @@ public class HtmlPageBuilder {
 		this.headTitle = headTitle;
 	}
 	
-	public void setHeadStyle(String headStyle) {
+	public HtmlPageBuilder setHeadStyle(String headStyle) {
 		this.headStyle = headStyle;
+		return this;
 	}
 	
-	public void setHeadTitle(String headTitle) {
+	public HtmlPageBuilder setHeadTitle(String headTitle) {
 		this.headTitle = headTitle;
+		return this;
 	}
 	
-	public void setBody(String bodyAsText) {
+	public HtmlPageBuilder setBody(String bodyAsText) {
 		this.bodyAsText = bodyAsText;
+		return this;
 	}
 	
 	public String getPageAsText() {

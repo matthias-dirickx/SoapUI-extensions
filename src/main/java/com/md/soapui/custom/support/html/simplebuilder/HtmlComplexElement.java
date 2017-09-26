@@ -1,4 +1,4 @@
-package com.md.soapui.custom.support.html;
+package com.md.soapui.custom.support.html.simplebuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,14 @@ public class HtmlComplexElement extends HtmlTag {
 	
 	public String getHtmlString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(this.start());
+		
 		for(String html : htmlElementList){
 			sb.append(html);
 		}
+		
+		sb.append(this.end());
+		
 		return sb.toString();
 	}
-	
 }
