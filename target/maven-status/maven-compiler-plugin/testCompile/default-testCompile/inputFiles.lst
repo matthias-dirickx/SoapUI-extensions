@@ -1,5 +1,10 @@
 C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\actions\SearchItemsActionTest.java
 C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\HtmlSimpleBuilderTest.java
 C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\ModelItemSupportTest.java
+<<<<<<< HEAD
 C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\DataDriverTest.java
+=======
+C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\ModelItemClassListTest.java
+C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\DataSourceTest.java
+>>>>>>> data-driver-excel
 C:\Users\Matthias\git\SoapUI-extensions\src\test\java\com\md\soapui\custom\tests\util\ScriptConfiguratorTest.java

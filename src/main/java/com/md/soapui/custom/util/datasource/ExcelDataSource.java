@@ -2,10 +2,12 @@ package com.md.soapui.custom.util.datasource;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -86,11 +88,15 @@ public class ExcelDataSource extends AbstractDataSource {
 		try {
 			this.wb = new XSSFWorkbook(this.file);
 		} catch (InvalidFormatException e) {
-			new DataSourceException("This is not a valid format");
+			new DataSourceException("This is not a valid format", e);
 			e.printStackTrace();
 		} catch (IOException e) {
-			new DataSourceException("IO Exception");
+			new DataSourceException("IO Exception", e);
 			e.printStackTrace();
+		} catch (NotOfficeXmlFileException e) {
+			new DataSourceException("This is not an Office XML file.", e);
+		} catch (InvalidOperationException e) {
+			new DataSourceException(e);
 		}
 	}
 	
@@ -173,19 +179,19 @@ public class ExcelDataSource extends AbstractDataSource {
 		return this;
 	}
 	
-	
-	
 	//Private methods for the automatic initialization
 	private void initializeFirstExistingCellNumber() {
 		int firstCellNumber = sheet.getRow(0).getFirstCellNum();
 		if(firstCellNumber != 0) {
 			for(int i = 1; i < sheet.getLastRowNum(); i++) {
-				int testInt = sheet.getRow(i).getFirstCellNum();
-				if(testInt < firstCellNumber) {
-					firstCellNumber = testInt;
-				}
-				if(testInt == 0) {
-					break;
+				if(sheet.getRow(i) != null) {
+					int testInt = sheet.getRow(i).getFirstCellNum();
+					if(testInt == 0) {
+						break;
+					}
+					if(testInt < firstCellNumber) {
+						firstCellNumber = testInt;
+					}
 				}
 			}
 		}
@@ -195,9 +201,11 @@ public class ExcelDataSource extends AbstractDataSource {
 	private void initializeLastExistingCellNumber() {
 		int lastCellNumber = sheet.getRow(0).getLastCellNum();
 		for(int i = 1; i < sheet.getLastRowNum(); i++) {
-			int testInt = sheet.getRow(i).getLastCellNum();
-			if(testInt > lastCellNumber) {
-				lastCellNumber = testInt;
+			if(sheet.getRow(i) != null) {
+				int testInt = sheet.getRow(i).getLastCellNum();
+				if(testInt > lastCellNumber) {
+					lastCellNumber = testInt;
+				}
 			}
 		}
 		this.lastCellNumber = lastCellNumber;
@@ -220,12 +228,18 @@ public class ExcelDataSource extends AbstractDataSource {
 	//Return Line of data methods.
 	//This is the bottom line.
 	@Override
-	protected ArrayList<String> getLineWithoutHeaders (int rowNumber) {
-		ArrayList<String> row = new ArrayList<>();
+	protected Map<Integer, String> getLineWithoutHeaders (int rowNumber) {
+		Map<Integer, String> row = new HashMap<>();
 		XSSFRow dataRow = sheet.getRow(rowNumber);
-		for(int cellNum = firstCellNumber; cellNum < lastCellNumber; cellNum++) {
-			row.add(dataRow.getCell(cellNum).getStringCellValue());
-		}
+		if(dataRow != null) {
+			for(int cellNum = firstCellNumber; cellNum < lastCellNumber; cellNum++) {
+				if(dataRow.getCell(cellNum) != null) {
+					row.put(cellNum, dataRow.getCell(cellNum).getStringCellValue());
+				} else {
+					row.put(cellNum, "");
+				}
+			}
+		} 
 		return row;
 	}
 	
@@ -233,12 +247,16 @@ public class ExcelDataSource extends AbstractDataSource {
 	protected HashMap<String,String> getLineWithHeaders(int rowNumber) {
 		HashMap<String, String> row = new HashMap<>();
 		XSSFRow dataRow = sheet.getRow(rowNumber);
-		
-		for(int cellNum = firstHeaderCell; cellNum < lastHeaderCell; cellNum++) {
-			row.put(headerRow.getCell(cellNum).getStringCellValue()
-				   ,dataRow.getCell(cellNum).getStringCellValue());
+		if(dataRow != null) {
+			for(int cellNum = firstHeaderCell; cellNum < lastHeaderCell; cellNum++) {
+				if(dataRow.getCell(cellNum) != null) {
+					row.put(headerRow.getCell(cellNum).getStringCellValue()
+						   ,dataRow.getCell(cellNum).getStringCellValue());
+				} else {
+					row.put(headerRow.getCell(cellNum).getStringCellValue(),"");
+				}
+		    }
 		}
 		return row;
 	}
-
 }

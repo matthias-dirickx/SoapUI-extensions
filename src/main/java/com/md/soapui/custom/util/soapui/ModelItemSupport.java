@@ -1,5 +1,7 @@
 package com.md.soapui.custom.util.soapui;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,6 @@ public class ModelItemSupport {
 	public List<ModelItem> getAllChildren(ModelItem item) {
 		List<ModelItem> allChildren = new ArrayList<>();
 		findAllChildrenRecursive(allChildren, item);
-		
 		return allChildren;
 	}
 	
@@ -35,10 +36,42 @@ public class ModelItemSupport {
             	searchResult.add(child);
             }
         }
-		
 		return searchResult;
 	}
 	
+	public List<ModelItem> getAllChildren(ModelItem item
+			                             ,String token
+			                             ,boolean caseSensitive
+			                             ,boolean normalize) {
+		List<ModelItem> allChildren = getAllChildren(item);
+		List<ModelItem> searchResult = new ArrayList<>();
+		
+		String usedToken = token;
+		
+		if(normalize) {
+			usedToken = normalize(token);
+		}
+		if(!caseSensitive) {
+			usedToken = usedToken.toLowerCase();
+		}
+		for( ModelItem child : allChildren){
+            if(normalize(child.getName()).contains(usedToken)) {
+            	searchResult.add(child);
+            }
+        }
+		return searchResult;
+	}
+	
+	private String normalize(String token) {
+		if (token != null) {
+			return Normalizer.normalize(token, Form.NFD)
+		                     .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+		                     .replaceAll(" ", "");
+		} else {
+			return null;
+		}
+	}
+
 	/**
 	 * Return a list of ModelItems filtered from a given list
 	 * You will exclude certain types, given as a list of ENUM ModelItemClassName
@@ -53,13 +86,11 @@ public class ModelItemSupport {
 		for(ModelItemList mic : exclude) {
 			excludeList.add(mic.soapUIClass());
 		}
-		
 		for(ModelItem item : list) {
 			if(!excludeList.contains(item.getClass())) {
 				filteredList.add(item);
 			}
 		}
-		
 		return filteredList;
 	}
 	
@@ -77,13 +108,11 @@ public class ModelItemSupport {
 		for(ModelItemList mic : include) {
 			includeList.add(mic.soapUIClass());
 		}
-		
 		for(ModelItem item : list) {
 			if(includeList.contains(item.getClass())) {
 				filteredList.add(item);
 			}
 		}
-		
 		return filteredList;
 	}
 	
