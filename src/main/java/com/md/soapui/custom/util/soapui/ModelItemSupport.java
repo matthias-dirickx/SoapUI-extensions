@@ -46,11 +46,11 @@ public class ModelItemSupport {
 	 * @param exclude
 	 * @return
 	 */
-	public List<ModelItem> excludeModelItemClass(List<ModelItem> list, ModelItemClassList... exclude ) {
+	public List<ModelItem> excludeModelItemClass(List<ModelItem> list, ModelItemList... exclude ) {
 		List<ModelItem> filteredList = new ArrayList<>();
 		List<Class> excludeList = new ArrayList<>();
 		
-		for(ModelItemClassList mic : exclude) {
+		for(ModelItemList mic : exclude) {
 			excludeList.add(mic.soapUIClass());
 		}
 		
@@ -70,11 +70,11 @@ public class ModelItemSupport {
 	 * @param exclude
 	 * @return
 	 */
-	public List<ModelItem> includeModelItemClass(List<ModelItem> list, ModelItemClassList... include ) {
+	public List<ModelItem> includeModelItemClass(List<ModelItem> list, ModelItemList... include ) {
 		List<ModelItem> filteredList = new ArrayList<>();
 		List<Class> includeList = new ArrayList<>();
 		
-		for(ModelItemClassList mic : include) {
+		for(ModelItemList mic : include) {
 			includeList.add(mic.soapUIClass());
 		}
 		
@@ -94,4 +94,31 @@ public class ModelItemSupport {
             	findAllChildrenRecursive( allChildren, child);
         }
 	}
+	
+/////////////////////ModelItem tests/////////////////////////
+
+    public boolean isAssertable(Class<?> claz) {
+        boolean isAssertable = com.eviware.soapui.model.testsuite.Assertable.class.isAssignableFrom(claz);
+        return isAssertable;
+    }
+
+    public boolean isTestSuite(Class<?> claz) {
+        boolean isAssertable = com.eviware.soapui.model.testsuite.TestSuite.class.isAssignableFrom(claz);
+        return isAssertable;
+    }
+
+    public boolean isTestCase(Class<?> claz) {
+        boolean isAssertable = com.eviware.soapui.model.testsuite.TestCase.class.isAssignableFrom(claz);
+        return isAssertable;
+    }
+
+    public boolean isTestStep(Class<?> claz) {
+        boolean isAssertable = com.eviware.soapui.model.testsuite.TestStep.class.isAssignableFrom(claz);
+        return isAssertable;
+    }
+
+    public boolean isTestAssertion(Class<?> claz) {
+        boolean isAssertable = com.eviware.soapui.model.testsuite.TestAssertion.class.isAssignableFrom(claz);
+        return isAssertable;
+    }
 }

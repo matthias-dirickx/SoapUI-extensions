@@ -6,19 +6,15 @@ import java.io.IOException;
 import org.junit.Test;
 
 import com.md.soapui.custom.util.datasource.DataSource;
+import com.md.soapui.custom.util.datasource.DataSourceException;
 import com.md.soapui.custom.util.datasource.DataSourceType;
 
 public class DataDriverTest {
 	
-	@Test
-	public void testDataDriverInitialization_Excel() {
+	
+	public void testDataDriverInitialization_Excel() throws DataSourceException {
 		DataSource eDriver = new DataSource(DataSourceType.EXCEL_XLSX, new File("src/test/resources/testBook_Sheets_AndColumns.xlsx"));
-		try {
-			assert eDriver.getFile().getCanonicalPath().equals("src/test/resources/testBook_Sheets_AndColumns.xlsx");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		assert eDriver.getFile().getPath().equals("src/test/resources/testBook_Sheets_AndColumns.xlsx");
 	}
 
 }

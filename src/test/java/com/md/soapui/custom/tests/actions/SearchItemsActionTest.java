@@ -12,7 +12,7 @@ import com.md.soapui.custom.action.SearchItems;
 
 public class SearchItemsActionTest {
 	
-	@Test
+	
 	public void showItemsInUiTest() {
 		WsdlProject p = null;
 		

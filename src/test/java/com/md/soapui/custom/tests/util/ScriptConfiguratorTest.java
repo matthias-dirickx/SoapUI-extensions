@@ -20,7 +20,7 @@ public class ScriptConfiguratorTest {
 	public void scriptConfigurationTestFailedCompilation() {
 		Map<String, Object> vars = new HashMap<>();
 		vars.put("var", "Groovy");
-		ScriptConfigurator("badTestScript.groovy", vars).getClass().isInstance(org.codehaus.groovy.control.MultipleCompilationErrorsException.class);
+		new ScriptConfigurator("badTestScript.groovy", vars).getClass().isInstance(org.codehaus.groovy.control.MultipleCompilationErrorsException.class);
 	}
 	
 	@Test
