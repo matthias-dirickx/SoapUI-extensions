@@ -15,7 +15,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlGotoTestStep;
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep;
 
-public enum ModelItemClassList {
+public enum ModelItemList {
 	PROJECT(Project.class),
 	TEST_SUITE(TestSuite.class),
 	TEST_CASE(WsdlTestCase.class),
@@ -32,7 +32,7 @@ public enum ModelItemClassList {
 	
 	private Class<? extends ModelItem> soapUIClass;
 	
-	ModelItemClassList(Class<? extends ModelItem> soapUIClass) {
+	ModelItemList(Class<? extends ModelItem> soapUIClass) {
 		this.soapUIClass = soapUIClass;
 	}
 	
