@@ -22,9 +22,9 @@ public class HtmlSimpleElement extends HtmlTag {
 	}
 	
 	private String escapeLight(String s) {
-		return s.replace("<", "&lt;")
+		return s.replace("&", "&amp;")
+				.replace("<", "&lt;")
 	            .replace(">", "&gt;")
-	            .replace("&", "&amp;")
 	            .replace("\"", "&quot;")
 	            .replace("'", "&apos;")
 	            .replace("\n", "</br>");

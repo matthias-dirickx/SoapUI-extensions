@@ -21,11 +21,6 @@ public class HtmlPageBuilder {
 		return this;
 	}
 	
-	public HtmlPageBuilder setHeadTitle(String headTitle) {
-		this.headTitle = headTitle;
-		return this;
-	}
-	
 	public HtmlPageBuilder setBody(String bodyAsText) {
 		this.bodyAsText = bodyAsText;
 		return this;
@@ -36,21 +31,20 @@ public class HtmlPageBuilder {
 	}
 	
 	private String composeHtmlPage() {
-		StringBuilder htmlPage = null;
-		return
-		htmlPage.append("<html>")
-		        .append("<head>")
-		        .append("<title>")
-		        .append(headTitle)
-		        .append("</title>")
-		        .append("<style>")
-		        .append(headStyle)
-		        .append("</style>")
-		        .append("</head>")
-		        .append("<body>")
-		        .append(bodyAsText)
-		        .append("</body>")
-		        .append("</html>")
-		        .toString();
+		StringBuilder htmlPage = new StringBuilder();
+		return htmlPage.append("<html>")
+		               .append("<head>")
+		               .append("<title>")
+		               .append(headTitle)
+		               .append("</title>")
+		               .append("<style>")
+		               .append(headStyle)
+		               .append("</style>")
+		               .append("</head>")
+		               .append("<body>")
+		               .append(bodyAsText)
+		               .append("</body>")
+		               .append("</html>")
+		               .toString();
 	}
 }
