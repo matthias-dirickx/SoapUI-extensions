@@ -20,16 +20,16 @@ public class ScriptConfiguratorTest {
 	public void scriptConfigurationTestFailedCompilation() {
 		Map<String, Object> vars = new HashMap<>();
 		vars.put("var", "Groovy");
-<<<<<<< HEAD
+
 		new ScriptConfigurator("badTestScript.groovy", vars).getClass().isInstance(org.codehaus.groovy.control.MultipleCompilationErrorsException.class);
-=======
+
 		System.out.println(new ScriptConfigurator("badTestScript.groovy", vars).getClass().isInstance(org.codehaus.groovy.control.MultipleCompilationErrorsException.class));
 		try {
 			new ScriptConfigurator("badTestScript.groovy", vars).getClass().isInstance(org.codehaus.groovy.control.MultipleCompilationErrorsException.class);
 		} catch (MultipleCompilationErrorsException e) {
 			assert e.getClass().isInstance(MultipleCompilationErrorsException.class);
 		}
->>>>>>> data-driver-excel
+
 	}
 	
 	@Test
