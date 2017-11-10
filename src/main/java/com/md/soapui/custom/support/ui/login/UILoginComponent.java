@@ -8,18 +8,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
-public class UILoginComponent extends JDialog {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class UILoginComponent {
 	
 	private JComponent component;
 	private JTextField unField;
@@ -63,14 +58,14 @@ public class UILoginComponent extends JDialog {
 		return panel;
 	}
 
-	private Component buildFields() {
+	private JComponent buildFields() {
 		JComponent comp = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
 		JLabel unFieldLabel = new JLabel("Username: ");
-		unField = new JTextField();
+		unField = new JTextField(30);
 		JLabel pwFieldLabel = new JLabel("Password: ");
-		pwField = new JPasswordField();
+		pwField = new JPasswordField(30);
 		
 		c.gridx = 0;
 		c.gridy = 0;
@@ -92,16 +87,29 @@ public class UILoginComponent extends JDialog {
 		
 		comp.add(pwField, c);
 		
-		return null;
+		return comp;
 	}
 
 	private Component buildButtons() {
+		JComponent comp = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+	    
 		JButton okButton = new JButton("OK");
 		okButton.addActionListener(new okAction());
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new cancelAction());
 		
-		return null;
+		c.gridx = 0;
+	    c.gridy = 0;
+	    
+	    comp.add(okButton);
+	    
+	    c.gridx = 1;
+	    c.gridy = 0;
+	    
+	    comp.add(cancelButton);
+	    
+		return comp;
 	}
 	
 	private class okAction implements ActionListener {
@@ -110,17 +118,21 @@ public class UILoginComponent extends JDialog {
 			un = unField.getText();
 			pw = pwField.getPassword();
 			done = true;
-			dispose();
+			closeWindow();
 		}
 	}
 	
 	private class cancelAction implements ActionListener {
 		@Override
 		public void actionPerformed (ActionEvent e) {
-			un = "";
-			pw = "".toCharArray();
+			un = null;
+			pw = null;
 			done = true;
-			dispose();
+			closeWindow();
 		}
+	}
+
+	public void closeWindow() {
+		SwingUtilities.getWindowAncestor(component).dispose();
 	}
 }

@@ -1,7 +1,6 @@
 package com.md.soapui.custom.support.ui.login;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import com.md.soapui.custom.support.ui.login.CredsContainer;
 
 public class UILoginComponentImplementation {
@@ -12,12 +11,13 @@ public class UILoginComponentImplementation {
 		login = new UILoginComponent();
 	}
 	
-	public void launch() {
+	public UILoginComponentImplementation launch() {
 		JFrame frame = new JFrame();
-		frame.add(login);
+		frame.add(login.getComponent());
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		return this;
 	}
 	
 	public CredsContainer getCreds() {
@@ -25,12 +25,7 @@ public class UILoginComponentImplementation {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				JOptionPane.showConfirmDialog(null
-						                    , "Something went wrong.\n"
-						                    + "Please consult the log files for more information"
-						                    , "Error - Thread sleep interrupted"
-						                    , JOptionPane.OK_OPTION
-						                    , JOptionPane.ERROR_MESSAGE);
+				//TODO show error message. Tried with dialog but gave error when adding to frame.
 				e.printStackTrace();
 			}
 		}
