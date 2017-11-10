@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.eviware.soapui.model.ModelItem;
+import com.eviware.soapui.model.testsuite.Assertable;
+import com.eviware.soapui.model.testsuite.TestCase;
+import com.eviware.soapui.model.testsuite.TestStep;
 
 public class ModelItemSupport {
 
@@ -126,28 +129,72 @@ public class ModelItemSupport {
 	
 /////////////////////ModelItem tests/////////////////////////
 
-    public boolean isAssertable(Class<?> claz) {
+    public boolean isAssertable(Class<? extends ModelItem> claz) {
         boolean isAssertable = com.eviware.soapui.model.testsuite.Assertable.class.isAssignableFrom(claz);
         return isAssertable;
     }
 
-    public boolean isTestSuite(Class<?> claz) {
+    public boolean isTestSuite(Class<? extends ModelItem> claz) {
         boolean isAssertable = com.eviware.soapui.model.testsuite.TestSuite.class.isAssignableFrom(claz);
         return isAssertable;
     }
 
-    public boolean isTestCase(Class<?> claz) {
+    public boolean isTestCase(Class<? extends ModelItem> claz) {
         boolean isAssertable = com.eviware.soapui.model.testsuite.TestCase.class.isAssignableFrom(claz);
         return isAssertable;
     }
 
-    public boolean isTestStep(Class<?> claz) {
+    public boolean isTestStep(Class<? extends ModelItem> claz) {
         boolean isAssertable = com.eviware.soapui.model.testsuite.TestStep.class.isAssignableFrom(claz);
         return isAssertable;
     }
 
-    public boolean isTestAssertion(Class<?> claz) {
+    public boolean isTestAssertion(Class<? extends ModelItem> claz) {
         boolean isAssertable = com.eviware.soapui.model.testsuite.TestAssertion.class.isAssignableFrom(claz);
         return isAssertable;
     }
+    
+    public SoapUIStatus getStepStatus(TestStep step) {
+    	String stringStatus = ((Assertable) step).getAssertionStatus().toString();
+    	if(step.isDisabled()) {
+    		return SoapUIStatus.DISABLED;
+    	} else {
+    	    switch(stringStatus) {
+    	        case "VALID" : return SoapUIStatus.VALID;
+    	        case "FAILED" : return SoapUIStatus.FAILED;
+    	        case "UNKNOWN" : return SoapUIStatus.UNKNOWN;
+    	        default : return SoapUIStatus.UNKNOWN;
+    	    }
+    	}
+    }
+    
+    //Helper utilities for status consolidation
+    public SoapUIStatus getDerivedTestCaseStatus(TestCase tc) {
+    	  List<SoapUIStatus> tsStatusList = new ArrayList<>();
+    	  List<TestStep> testStepList = tc.getTestStepList();
+    	  for(TestStep ts : testStepList) {
+    	      if(isAssertable(ts.getClass())) {
+    	          if(!ts.isDisabled()) {
+    	              tsStatusList.add(getStepStatus(ts));
+    	          }
+    	      }
+    	  }
+    	  
+    	  if(tsStatusList.contains(SoapUIStatus.FAILED)) {
+    	    return SoapUIStatus.FAILED;
+    	  } else {
+    		  int validCounter;
+    		  validCounter = 0;
+    		  for(SoapUIStatus status : tsStatusList) {
+    			  if(status.equals(SoapUIStatus.VALID)) {
+    				  validCounter++;
+    			  }
+    		  }
+    		  if(validCounter == tsStatusList.size()) {
+    			  return SoapUIStatus.VALID;
+    		  } else {
+    			  return SoapUIStatus.UNKNOWN;
+    		  }
+    	  }
+      }
 }

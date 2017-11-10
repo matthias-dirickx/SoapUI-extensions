@@ -2,6 +2,7 @@ package com.md.soapui.custom.util.soapui;
 
 import com.eviware.soapui.model.ModelItem;
 import com.eviware.soapui.model.project.Project;
+import com.eviware.soapui.model.testsuite.TestStep;
 import com.eviware.soapui.model.testsuite.TestSuite;
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase;
 import com.eviware.soapui.impl.wsdl.teststeps.HttpTestRequestStep;
@@ -19,6 +20,7 @@ public enum ModelItemList {
 	PROJECT(Project.class),
 	TEST_SUITE(TestSuite.class),
 	TEST_CASE(WsdlTestCase.class),
+	TEST_STEP(TestStep.class),
 	HTTP_REQUEST_STEP(HttpTestRequestStep.class),
 	JDBC_REQUEST_STEP(JdbcRequestTestStep.class),
 	MANUAL_STEP(ManualTestStep.class),
