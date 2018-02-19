@@ -5,9 +5,8 @@ import java.util.Map;
 
 public class HtmlTag {
 	private final String SPACE = " ";
-	String tag;
-	String attributeString;
-	HashMap<String,String> attributes;
+	private String tag;
+	private HashMap<String,String> attributes;
 	
 	public HtmlTag(String tag) {
 		this.tag = tag;
@@ -20,10 +19,9 @@ public class HtmlTag {
 	
 	public String start() {
 		StringBuilder sb = new StringBuilder();
-		setAttributesString();
 		return sb.append("<")
 				 .append(tag)
-				 .append(attributeString)
+				 .append(getAttributeString())
 				 .append(">")
 				 .toString();
 	}
@@ -34,15 +32,14 @@ public class HtmlTag {
 	
 	public String startWithoutContent() {
 		StringBuilder sb = new StringBuilder();
-		setAttributesString();
 		return sb.append("<")
 				 .append(tag)
-				 .append(attributeString)
+				 .append(getAttributeString())
 				 .append("/>")
 				 .toString();
 	}
 	
-	private void setAttributesString() {
+	private String getAttributeString() {
 		StringBuilder sb = new StringBuilder();
 		String s = "";
 		if(!attributes.isEmpty()) {
@@ -54,6 +51,6 @@ public class HtmlTag {
 				s = sb.toString();
 			}
 		}
-		this.attributeString = s;
+		return s;
 	}
 }

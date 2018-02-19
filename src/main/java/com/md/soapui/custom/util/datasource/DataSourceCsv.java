@@ -1,14 +1,36 @@
 package com.md.soapui.custom.util.datasource;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class CsvDataSource extends AbstractDataSource {
+import com.md.soapui.custom.util.datasource.DataSourceException;
+
+public class DataSourceCsv extends AbstractDataSource {
 	
-	public CsvDataSource(File file) {
-		
-	}
+	private String seperator = ";";
+	private List<String[]> splitLines;
+	private int DEFAULT_LAST_COLUMN_INDEX;
+	
+	private int lastColumnIndex;
+	
+	public DataSourceCsv(File file) {
+		List<String[]> splitLines = new ArrayList<>();
+		String line = "";
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            while ((line = br.readLine()) != null) {
+                String[] splittedLine = line.split(seperator);
+                splitLines.add(splittedLine);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		this.splitLines = splitLines;
+    }
 
 	@Override
 	public void loadDataset() {
@@ -35,44 +57,48 @@ public class CsvDataSource extends AbstractDataSource {
 	}
 
 	@Override
-	public AbstractDataSource getTheSheetWithName(String sheetName) {
-		// TODO Auto-generated method stub
-		return null;
+	public AbstractDataSource getTheSheetWithName(String sheetName) throws DataSourceException {
+		throw new DataSourceException("This operation is not allowed for this type." );
 	}
 
 	@Override
-	public AbstractDataSource getTheSheetWithIndex(int sheetIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public AbstractDataSource getTheSheetWithIndex(int sheetIndex) throws DataSourceException {
+		throw new DataSourceException("This operation is not allowed for this type." );
 	}
 
 	@Override
 	public AbstractDataSource startAtRow(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		this.setStartAtRow(index);
+		return this;
 	}
 
 	@Override
 	public AbstractDataSource stopAtRow(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		this.setStopAtRow(index);
+		return this;
 	}
 
 	@Override
 	public AbstractDataSource startAtColumn(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		this.setStartAtColumn(index);
+		return this;
 	}
 
 	@Override
 	public AbstractDataSource stopAtColumn(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		this.setStopAtColumn(index);
+		return this;
 	}
 
 	@Override
 	public AbstractDataSource useHeadersAtRow(int index) {
-		// TODO Auto-generated method stub
+		this.setHeaderRowNumber(index);
+		return this;
+	}
+
+	@Override
+	public AbstractDataSource setSeperatorTo(String seperator) throws DataSourceException {
+		this.seperator = seperator;
 		return null;
 	}
 

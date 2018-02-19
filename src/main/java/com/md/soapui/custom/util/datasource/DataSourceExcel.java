@@ -12,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelDataSource extends AbstractDataSource {
+public class DataSourceExcel extends AbstractDataSource {
 	
 	//Default values
 	private static final int DEFAULT_SHEET_INDEX = 0;
@@ -72,7 +72,7 @@ public class ExcelDataSource extends AbstractDataSource {
 	 * </li>
 	 * @param file
 	 */
-	public ExcelDataSource(File file) {
+	public DataSourceExcel(File file) {
 		this.file = file;
 		setWorkbook();
 		initializeDefaultValues();
@@ -138,42 +138,42 @@ public class ExcelDataSource extends AbstractDataSource {
 		headerRow = sheet.getRow(getHeaderRowNumber());
 	}
 	
-	public ExcelDataSource getTheSheetWithName(String sheetName) {
-		this.sheetName = sheetName;
+	public DataSourceExcel getTheSheetWithName(String sheetName) {
 		this.selectSheetByName = true;
+		this.sheetName = sheetName;
 		return this;
 	}
 	
-	public ExcelDataSource getTheSheetWithIndex(int sheetIndex) {
-		this.sheetIndex = sheetIndex;
+	public DataSourceExcel getTheSheetWithIndex(int sheetIndex) {
 		this.selectSheetByName = false;
+		this.sheetIndex = sheetIndex;
 		return this;
 	}
 	
-	public ExcelDataSource startAtRow(int rowIndex) {
+	public DataSourceExcel startAtRow(int rowIndex) {
 		setFirstDataRowNumber(rowIndex);
 		return this;
 	}
 	
-	public ExcelDataSource stopAtRow(int rowIndex) {
+	public DataSourceExcel stopAtRow(int rowIndex) {
 		this.lastDatarow = rowIndex;
 		this.initializeLastDatarowNumber = false;
 		return this;
 	}
 	
-	public ExcelDataSource startAtColumn(int cellIndex) {
+	public DataSourceExcel startAtColumn(int cellIndex) {
 		this.firstCellNumber = cellIndex;
 		this.initializeFirstCellNumber = false;
 		return this;
 	}
 	
-	public ExcelDataSource stopAtColumn(int cellIndex) {
+	public DataSourceExcel stopAtColumn(int cellIndex) {
 		this.lastCellNumber = cellIndex;
 		this.initializeLastCellNumber = false;
 		return this;
 	}
 	
-	public ExcelDataSource useHeadersAtRow(int rowIndex) {
+	public DataSourceExcel useHeadersAtRow(int rowIndex) {
 		this.setHeaderRowNumber(rowIndex);
 		this.setBasedOnHeaders(true);
 		return this;
@@ -258,5 +258,11 @@ public class ExcelDataSource extends AbstractDataSource {
 		    }
 		}
 		return row;
+	}
+
+	@Override
+	public AbstractDataSource setSeperatorTo(String sep) throws DataSourceException {
+		throw new DataSourceException("This type does not support a seperator.\n"
+				+ "To be able to declare a seperator, use th CSV datasource file type.");
 	}
 }

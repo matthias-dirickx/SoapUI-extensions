@@ -12,6 +12,13 @@ import com.eviware.soapui.model.testsuite.TestStep;
 
 public class ModelItemSupport {
 
+	public ModelItemSupport(){
+		/*
+		 * This constructor is empty.
+		 * This class is an aggregator for methods on model items.
+		 * They can be called directly.
+		 */
+	}
 	/**
 	 * Get all child items of a given ModelItem item.
 	 * @param item
@@ -154,23 +161,23 @@ public class ModelItemSupport {
         return isAssertable;
     }
     
-    public SoapUIStatus getStepStatus(TestStep step) {
+    public Status getStepStatus(TestStep step) {
     	String stringStatus = ((Assertable) step).getAssertionStatus().toString();
     	if(step.isDisabled()) {
-    		return SoapUIStatus.DISABLED;
+    		return Status.DISABLED;
     	} else {
     	    switch(stringStatus) {
-    	        case "VALID" : return SoapUIStatus.VALID;
-    	        case "FAILED" : return SoapUIStatus.FAILED;
-    	        case "UNKNOWN" : return SoapUIStatus.UNKNOWN;
-    	        default : return SoapUIStatus.UNKNOWN;
+    	        case "VALID" : return Status.VALID;
+    	        case "FAILED" : return Status.FAILED;
+    	        case "UNKNOWN" : return Status.UNKNOWN;
+    	        default : return Status.UNKNOWN;
     	    }
     	}
     }
     
     //Helper utilities for status consolidation
-    public SoapUIStatus getDerivedTestCaseStatus(TestCase tc) {
-    	  List<SoapUIStatus> tsStatusList = new ArrayList<>();
+    public Status getDerivedTestCaseStatus(TestCase tc) {
+    	  List<Status> tsStatusList = new ArrayList<>();
     	  List<TestStep> testStepList = tc.getTestStepList();
     	  for(TestStep ts : testStepList) {
     	      if(isAssertable(ts.getClass())) {
@@ -180,20 +187,20 @@ public class ModelItemSupport {
     	      }
     	  }
     	  
-    	  if(tsStatusList.contains(SoapUIStatus.FAILED)) {
-    	    return SoapUIStatus.FAILED;
+    	  if(tsStatusList.contains(Status.FAILED)) {
+    	    return Status.FAILED;
     	  } else {
     		  int validCounter;
     		  validCounter = 0;
-    		  for(SoapUIStatus status : tsStatusList) {
-    			  if(status.equals(SoapUIStatus.VALID)) {
+    		  for(Status status : tsStatusList) {
+    			  if(status.equals(Status.VALID)) {
     				  validCounter++;
     			  }
     		  }
     		  if(validCounter == tsStatusList.size()) {
-    			  return SoapUIStatus.VALID;
+    			  return Status.VALID;
     		  } else {
-    			  return SoapUIStatus.UNKNOWN;
+    			  return Status.UNKNOWN;
     		  }
     	  }
       }

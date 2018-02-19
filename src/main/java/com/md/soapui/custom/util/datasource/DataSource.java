@@ -19,16 +19,18 @@ public class DataSource {
 	
 	private void initiateDriver() throws DataSourceException {
 		switch(type) {
-		    case EXCEL_XLSX : dataSource = new ExcelDataSource(file);
+		    case EXCEL_XLSX : dataSource = new DataSourceExcel(file);
 		    break;
-		    case CSV : dataSource = new CsvDataSource(file);
+		    case CSV : dataSource = new DataSourceCsv(file);
 		    break;
-		    default: throw new DataSourceException("Type not known - must be one of DataDriverType Enum " + Arrays.asList(DataSourceType.values()));
+		    default: throw new DataSourceException("Type not known - must be one of DataDriverType Enum "
+		                                           + Arrays.asList(DataSourceType.values()));
 		}
 	}
 	
 	/**
-	 * Access point for all configuration as well as the command to load the set with the loadDataset() method.
+	 * Access point for all configuration as well as the command
+	 * to load the set with the loadDataset() method.
 	 * @return AbstractDataDriver
 	 */
 	public AbstractDataSource config() {

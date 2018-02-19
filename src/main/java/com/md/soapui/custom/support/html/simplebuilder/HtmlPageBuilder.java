@@ -33,17 +33,17 @@ public class HtmlPageBuilder {
 	private String composeHtmlPage() {
 		StringBuilder htmlPage = new StringBuilder();
 		return htmlPage.append("<html>")
-		               .append("<head>")
-		               .append("<title>")
-		               .append(headTitle)
-		               .append("</title>")
-		               .append("<style>")
-		               .append(headStyle)
-		               .append("</style>")
-		               .append("</head>")
-		               .append("<body>")
-		               .append(bodyAsText)
-		               .append("</body>")
+		                 .append("<head>")
+		                   .append("<title>")
+		                     .append(headTitle)
+		                   .append("</title>")
+		                   .append("<style>")
+		                     .append(headStyle)
+		                   .append("</style>")
+		                 .append("</head>")
+		                 .append("<body>")
+		                   .append(bodyAsText)
+		                 .append("</body>")
 		               .append("</html>")
 		               .toString();
 	}

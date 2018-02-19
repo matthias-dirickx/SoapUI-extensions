@@ -1,6 +1,6 @@
 package com.md.soapui.custom.util.soapui;
 
-public enum SoapUIStatus {
+public enum Status {
 	VALID,
 	FAILED,
 	UNKNOWN,
